@@ -33,7 +33,10 @@ function buildRuleSet(ruleSet) {
             }
           }
 
-          if (score > maxScore) {
+          if ((score > maxScore || !maxValue) && handler(element)) {
+            if(query.includes("img[src")){
+              console.log("img", handler(element))
+            }
             maxScore = score;
             maxValue = handler(element);
           }
@@ -109,6 +112,8 @@ const metadataRuleSets = {
       ['meta[name="twitter:image"]', element => element.getAttribute('content')],
       ['meta[property="twitter:image"]', element => element.getAttribute('content')],
       ['meta[name="thumbnail"]', element => element.getAttribute('content')],
+      ['img[src$="png"]', element => element.getAttribute('src')],
+      ['img[src$="jpg"]', element => element.getAttribute('src')]
     ],
     processors: [
       (image_url, context) => makeUrlAbsolute(context.url, image_url)
