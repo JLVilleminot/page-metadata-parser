@@ -37,8 +37,14 @@ function buildRuleSet(ruleSet) {
             if(query.includes("img[src")){
               console.log("img", handler(element))
             }
-            maxScore = score;
-            maxValue = handler(element);
+
+            if(query.includes("image") && !handler(element).includes("http")){
+              //to avoid non url meta image
+              console.log("wrong img", handler(element))
+            }else{
+              maxScore = score;
+              maxValue = handler(element);
+            }
           }
         }
       }
@@ -69,6 +75,24 @@ const metadataRuleSets = {
     rules: [
       ['meta[property="og:description"]', element => element.getAttribute('content')],
       ['meta[name="description" i]', element => element.getAttribute('content')],
+    ],
+  },
+
+  video: {
+    rules: [
+      ['meta[property="og:video"]', element => element.getAttribute('content')],
+    ],
+  },
+
+  video_width: {
+    rules: [
+      ['meta[property="og:video:width"]', element => element.getAttribute('content')],
+    ],
+  },
+
+  video_height: {
+    rules: [
+      ['meta[property="og:video:height"]', element => element.getAttribute('content')],
     ],
   },
 
